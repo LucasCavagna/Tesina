@@ -1,0 +1,698 @@
+\chapter{Implementaciones adicionales para conjuntos ordenados}
+
+Para llevar a cabo la implementación de los conjuntos ordenados, fue necesario desarrollar una serie de funciones adicionales. A continuación, se describen dichas implementaciones complementarias junto con su correspondiente pseudocódigo.
+
+\textbf{Pseudocódigo/Notación}: Nuevamente tanto en este capitulo como en el siguiente se emplearán subíndices para referirse a los multi-intervalos de un conjunto ordenado. Dado un conjunto ordenado $A$, el elemento ubicado en la posición $i$, lo cual corresponde a \texttt{pieces\_[i]} en C++, se denotará como \textbf{$A_i$}, donde $i$ es un número natural que satisface $0 \leq i < |A|$, siendo $|A|$ el cardinal del conjunto $A$, es decir, la cantidad total de elementos que contiene. Cabe destacar que, al tratarse de un conjunto ordenado, siempre se cumple que $A_i < A_j$ si y sólo si $i < j$, para todo par de $i$ y $j$ tal que $0  \leq i, j < |A|$.
+
+
+\section*{Calculo de solapamiento - \texttt{doInt}}
+
+La operación \texttt{doInt} se utiliza en el contexto de conjuntos ordenados, aunque no forma parte de su batería de operaciones. Esta tiene el objetivo de calcular si existe solapamiento entre dos multi-intervalos. Esta operación resulta fundamental tanto para la aplicación del \textbf{criterio de solapamiento} como para el \textbf{criterio de anti-particionamiento}.
+
+El pseudocódigo correspondiente a esta operación se presenta a continuación, y resulta relativamente breve:
+
+
+\begin{algorithm}
+\caption{Calculo de solapamiento para conjuntos ordenados}
+\begin{algorithmic}[1]
+\Require $Mdi\_1$ y $Mdi\_2$ son dos multi-intervalos
+\Ensure Devuelve \texttt{true} si estos se solapan, \texttt{false} en caso contrario.
+\Function{doInt}{$Mdi\_1, Mdi\_2$}
+
+    \
+    
+    \State $max\_1 \gets$ \Call{maxElem}{$Mdi\_1$}
+    \State $min\_1 \gets$ \Call{minElem}{$Mdi\_1$}
+    \State $max\_2 \gets$ \Call{maxElem}{$Mdi\_2$}
+    \State $min\_2 \gets$ \Call{minElem}{$Mdi\_1$}
+    \State $a \gets$ \Call{arity}{$Mdi\_1$}
+
+    \
+
+    \For{$i = 0$; $i < a-1$ ; $i \!+\!+$}
+         \If{$max\_1[i] < min\_2[i]$ \textbf{or} $max\_2[i] < min\_1[i]$}
+            \State \Return \texttt{false} 
+        \EndIf
+    \EndFor
+
+    \
+    
+    \State \Return \texttt{true} 
+
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+\section*{Inserción con pista - \texttt{emplaceHint}}
+
+La función \texttt{emplaceHint} se propone también como una herramienta auxiliar externa a la estructura principal de conjuntos ordenados. Su tarea consiste en insertar un multi-intervalo en una colección ordenada de multi-intervalos, siguiendo el mismo criterio de ordenamiento utilizado por los conjuntos ordenados. Para hacerlo, utiliza una posición pista (\textit{hint}),es un numero positivo y una posición sugerida y que sirve como punto de inicio para encontrar eficientemente la ubicación correcta para ubicar el multi-intervalo.
+
+El pseudocódigo de esta función es corto, ya que su implementación es simple, y se encuentra en \ref{alg:emplaceHint-conj}.
+
+\begin{algorithm}
+\caption{Inserción con pista para conjuntos ordenados}
+\label{alg:emplaceHint-conj}
+\begin{algorithmic}[1]
+\Require $A$ es una conjunto ordenado, $Mdi$ en un multi-intervalo y $Hint$ es un numero positivo y una posición sugerida.
+\Ensure Inserta el $Mdi$ dentro del conjunto ordenado, manteniendo el orden y empezando a buscar la posición de inserción a partir de la $Hint$.
+\Function{emplaceHint}{$A,Mdi,Hint$}
+     \State $n \gets$ \Call{size}{$A$}
+    \State $it \gets Hint$ 
+    \While{$it < n$}
+        \If{$A_{it} < mdi$}
+            \State $it$ \!+\!+
+        \Else
+            \State \textbf{break}
+        \EndIf
+    \EndWhile
+
+      \State $A \gets$ $A_{0:it-1} \frown \{mdi\} \frown A_{it:\Call{size}{A}-1}$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+
+\section*{Avance de pista - \texttt{advanceHint}}
+
+La función \texttt{advanceHint} se propone también como una herramienta auxiliar externa a la estructura principal de conjuntos ordenados. El objetivo de esta función es avanzar la posición pista que viene como argumento en función de los elementos presentes en un conjunto ordenado utilizando un multi-intervalo coo criterio de parada.
+
+El pseudocódigo de esta función auxiliar se presenta a continuación.
+
+
+\begin{algorithm}
+\caption{\texttt{advanceHint}: Determina la posición de inserción sugerida}
+\label{alg:advanceHint}
+\begin{algorithmic}[1]
+\Require $A$ es una conjunto ordenado, $Mdi$ en un multi-intervalo y $Hint$ es un numero natural.
+\Ensure Avanza la pista $Hint$ en base a los elementos del conjunto y el $Mdi$.
+\Function{advanceHint}{$A,Mdi,Hint$}
+    \State $n \gets$ \Call{size}{$A$}
+    
+    \While{$Hint < n$}
+        \If{$A_{Hint} < Mdi$}
+            \State $Hint$ \!+\!+
+        \Else
+            \State \textbf{break}
+        \EndIf
+    \EndWhile
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+
+
+\chapter{Implementaciones para conjuntos ordenados}
+
+Llegado este punto, es momento de abordar las implementaciones concretas de las distintas operaciones sobre conjuntos ordenados. 
+
+Este capítulo se organiza en tres secciones principales: una dedicada a aquellas operaciones cuya implementación no requirió modificaciones, una sección que aborda las operaciones adaptadas para poder funcionar correctamente en el contexto de conjuntos ordenados, y finalmente otra correspondiente a las operaciones que fueron optimizadas.
+
+\section{Operaciones sin cambios}
+
+Al implementar los conjuntos ordenados utilizando como base la versión desordenada, se observó que ciertas operaciones no podían beneficiarse del orden para su optimización, pero tampoco alteraban dicho orden. Esto se debe, principalmente, a dos razones: o bien son operaciones que no devuelven un conjunto ordenado, o bien el conjunto resultante ya se encuentra ordenado.
+
+Dentro del primer conjunto de operaciones se incluyen, por ejemplo: \texttt{cardinal}, que devuelve el nuemro de elementos que contiene el conjunto; \texttt{arity}, que informa la aridad del mismo; entre otras.
+
+Dado que estas operaciones son numerosas y su comportamiento no resulta central para los objetivos de esta tesina, además de que sus implementaciones se mantuvieron sin modificaciones, no se detallarán aquí. Todas ellas pueden consultarse en el archivo \textit{set.cpp}, disponible en el repositorio dentro de la carpeta \textit{sbg} \cite{sbg}.
+
+En el segundo conjunto se incluyen operaciones como \texttt{compact}, cuyo algoritmo no elimina el orden del conjunto resultante, o \texttt{cup}, cuya lógica interna se basa exclusivamente en operaciones que preservan dicho orden.
+
+Al igual que en el caso anterior, se omite un desarrollo mas amplio de estas operaciones. Si se desea consultarlas en profundidad puede dirigirse al archivo \textit{set.cpp}, disponible en el repositorio dentro de la carpeta \textit{sbg} \cite{sbg}.
+
+\section{Operaciones adaptadas al orden}
+
+Este grupo de operaciones fueron adaptadas para funcionar en el contexto de conjuntos ordenados pero no pudieron ser optimizadas. Dentro de estas operaciones se encuentran:
+
+\begin{itemize}
+    \item \texttt{emplace}: Que se encarga de ubicar un multi-intervalo dentro de un conjunto.
+    \item \texttt{emplaceBack}: Que se encarga de ubicar un multi-intervalo al final de un conjunto, como su ultimo elemento, aquel con mayor mínimo.
+    \item \texttt{minElem}: Busca el mínimo mínimo de todos los multi-intervalos de un conjunto
+\end{itemize}
+
+Si se desea ver cuales fueron sus modificaciones con respecto a sus versiones de conjuntos desordenados, puede verifica el archivo \textit{set.cpp} dentro de la carpeta \textit{sbg}, disponible en el repositorio \cite{sbg}.
+
+\section{Operaciones optimizadas}
+
+En esta sección se presentan aquellas operaciones que pudieron ser optimizadas aprovechando el orden intrínseco de los conjuntos. Cada una de ellas será descripta minuciosamente y explicada en detalle, destacando los aspectos clave que permiten su mejora respecto de una implementación general.
+
+\subsection{Intersección - \texttt{intersection}}
+Como se puede observar a continuación, la operación \texttt{intersection} resultó ser considerablemente más extensa que su homóloga para conjuntos desordenados.
+
+No obstante, teniendo en cuenta lo expuesto en la sección correspondiente a esta operación en el capítulo de \textit{criterios de optimización y ordenamiento para conjuntos ordenados}, se tiene lo siguiente:
+
+\begin{itemize}
+    \item Para implementar el \textbf{criterio de selección}, se realiza la verificación correspondiente según lo establecido por dicho criterio, se analiza la cantidad de multi-intervalos presentes en los conjuntos $C$ y $D$. A partir de esta comparación, se determina cuál es el conjunto largo, $A$, y cuál el corto, $B$, tal como se muestra en la Parte 1, líneas 12 a 17.
+
+    \item En relación con el \textbf{criterio de eliminación}, dado que su cumplimiento implica la remoción de un elemento de uno de los conjuntos, en este caso del conjunto $B$, y dado que no es posible eliminar elementos directamente del mismo, se utiliza una lista enlazada que contiene los índices que referencian a los multi-intervalos de $B$. Esto permite llevar a cabo la eliminación de los indices en vez de los multi-intervalos. La preparación de dicha lista se observa en la Parte 1, líneas 18 a 21, y la implementación del criterio se detalla en la Parte 2, líneas 7 a 10.
+
+    \item En cuanto el \textbf{criterio de parada} este se implementa de la linea 11 a 13 de la Parte 2, donde lo único que se hace es forzar la salida del segundo bucle a traces de un \texttt{break}.
+
+    \item Para la aplicación del \textbf{criterio de solapamiento}, se emplea la función auxiliar \texttt{doInt}, encargada de verificar si dos multi-intervalos se solapan. Esto se encuentra en la Parte 2, línea 14.
+
+    \item Finalmente, el \textbf{criterio de ordenamiento} se implementa mediante las funciones auxiliares \texttt{advanceHint} y \texttt{emplaceHint}, permitiendo que al aplicar el criterio, el conjunto resultado se mantenga ordenado a lo largo de la ejecución. Esto puede observarse en la Parte 2, líneas 3 y 17.
+\end{itemize}
+
+\begin{algorithm}
+\caption{Intersección de conjuntos ordenados — Parte 1: Preparación}
+\begin{algorithmic}[1]
+\Require $C$ y $D$ son conjuntos ordenados
+\Ensure $R$ es la intersección ordenada de $C$ y $D$
+\Function{intersection}{$C, D$}
+    \State $R \gets \emptyset$
+
+    \If{$C == \emptyset$ \textbf{and} $D == \emptyset$}
+        \State \Return{$R$}
+    \EndIf
+
+    \If{$C == D$}
+        \State \Return{$C$}
+    \EndIf
+    
+    \
+    
+    \If{ \Call{maxElem}{$C$} $<$ \Call{minElem}{$D$} $ $\textbf{or}$ $ \Call{maxElem}{$C$} $<$ \Call{minElem}{$D$} }
+        \State \Return{$R$}
+    \EndIf
+        
+    \
+    
+    \State $B \gets C$
+    \State $A \gets D$
+
+    \If{\Call{size}{$D$} $<$ \Call{size}{$C$}}
+        \State $B \gets D$
+        \State $A \gets C$
+    \EndIf
+        
+    \
+    
+    \State $indeces \gets []$ \Comment{Es una lista simplemente enlazada}
+    \For{$i = 0$; $i < \Call{size}{B}$; $i$ \!+\!+ }
+        \State $indices \gets indices$  \!+\!+  $[i]$ \Comment{Se concatenan las listas enlazadas}
+    \EndFor
+        
+    \
+    
+    \State $r\_pos \gets 0$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}
+\caption{Intersección de conjuntos ordenados — Parte 2: Construcción del resultado}
+\begin{algorithmic}[1]
+\Function{intersection}{}
+    \ForAll{$a \in A$}
+            
+    \
+    
+        \State $\Call{advanceHint}{R,a,r\_pos}$
+
+        \State $i \gets 0$
+                
+    \
+    
+        \While{$i \neq \Call{length}{indices}$}
+                
+    \
+    
+            \State $b \gets B_{indices[i]}$
+        
+    \
+    
+            \If{\Call{maxElem}{$a$}[0] $<$ \Call{minElem}{$b$}[0]}
+                \State $indices \gets indices 	\triangleleft  i$
+                 \State $i$ \!+\!+ 
+                \State \textbf{continue}
+            \EndIf
+
+            \If{\Call{maxElem}{$a$}[0] $<$ \Call{minElem}{$b$}[0]}
+                \State \textbf{break}
+            \EndIf
+
+\
+            
+            \If{\Call{doInt}{$b$,$a$}}
+                \State $inter \gets$ \Call{intersection}{$a, b$}
+                \If{$\neg \Call{isEmpty}{inter}$}
+                    \State $\Call{emplaceHint}{R,inter,r\_pos}$
+                \EndIf
+            \EndIf
+        
+    \
+    
+            \State $i$ \!+\!+ 
+        \EndWhile
+        
+    \
+    
+        \If{$indices == []$}
+            \State \textbf{break}
+        \EndIf
+    \EndFor
+            
+    \
+    
+    \State \Return{$R$}
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+
+
+\newpage
+\subsection{Unión disjunta - \textit{disjointCup}}
+
+A continuación se presenta el pseudocódigo correspondiente a la implementación de la operación \texttt{disjointCup}, encargada de llevar a cabo la unión disjunta de conjuntos ordenados. 
+
+El algoritmo de fusión que implementa la unión disjunta debe recorre entonces ambos conjuntos en paralelo: tomando el indice $i\_a$ para $A$ y $i\_b$ para $B$, comenzando ambos en 0. En cada iteración de la operación se aplica el \textbf{criterio de ordenamiento}. El procedimiento distingue los siguientes casos:
+
+\begin{itemize}
+    \item \textbf{Si $A_{i\_a} < B_{i\_b}$}: se agrega $A_{i\_a}$ al final de $C$ y se incrementa el índice ${i\_a}$ (i.e., $i\_a$\!+\!+ ).
+    \item \textbf{En caso contrario} (es decir, $A_i \geq B_{i\_b}$): se agrega $B_{i\_b}$ al final de $C$ y se incrementa el índice $i\_b$ (i.e., $i\_b$\!+\!+ ).
+\end{itemize}
+
+Este proceso se repite hasta que al menos uno de los dos conjuntos ($A$ o $B$) haya sido recorrido completamente. Una vez alcanzado ese punto, se agregan al final de $C$ todos los elementos restantes del conjunto que aún no se haya agotado, preservando su orden original.
+
+La Figura~\ref{fig:unionDis-ejemplo} ejemplifica el proceso de ejecución de la función \texttt{disjointCup}. En ella, los multi-intervalos de los conjuntos $A$ y $B$ están representados respectivamente en rojo y verde cuando son sometidos al criterio de ordenamiento. Estos elementos pasan a través del criterio de ordenamiento definido, determinando su incorporación al conjunto resultante $C$, cuyos elementos se muestran en amarillo a medida que se insertan.
+
+
+\begin{figure}[htbp]
+\hspace{-0.06\textwidth} % Desplaza toda la figura hacia la izquierda
+\begin{minipage}{0.49\textwidth}
+    \centering
+    \subgraphics{figures/Optimazaciones/traverse/crir ordenameitno (1).png}{}%
+    \vspace{4pt}
+
+    \subgraphics{figures/Optimazaciones/traverse/crir ordenameitno (2).png}{}%
+    \vspace{4pt}
+
+    \subgraphics{figures/Optimazaciones/traverse/crir ordenameitno (3).png}{}%
+    \vspace{4pt}
+
+    \subgraphics{figures/Optimazaciones/traverse/crir ordenameitno (4).png}{}
+\end{minipage}%
+\hspace{0.01\textwidth} % Ajusta el espacio entre las columnas
+\begin{minipage}{0.49\textwidth}
+    \centering
+    \subgraphics{figures/Optimazaciones/traverse/crir ordenameitno (5).png}{}%
+    \vspace{4pt}
+
+    \subgraphics{figures/Optimazaciones/traverse/crir ordenameitno (6).png}{}%
+    \vspace{4pt}
+
+    \subgraphics{figures/Optimazaciones/traverse/crir ordenameitno (7).png}{}%
+    \vspace{4pt}
+
+    \subgraphics{figures/Optimazaciones/traverse/crir ordenameitno (8).png}{}
+\end{minipage}
+\caption{Ilustración del criterio de ordenamiento aplicado en la fusión \texttt{traverse} dado un conjunto $A$ y $B$ ordenados y disjuntos.}
+\label{fig:unionDis-ejemplo}
+\end{figure}
+
+
+
+
+
+
+
+\begin{algorithm}
+\caption{Unión de conjuntos ordenados disjuntos}\label{alg:two}
+\begin{algorithmic}[1]
+\Require $A$ y $B$ son conjuntos ordenados
+\Ensure $C$ es la unión disjunta ordenada de $A$ y $B$
+\Function{disjointCup}{$A,B$}
+
+\ 
+
+\If{$\Call{isEmpty}{A}$}
+    \State \Return $B$
+\EndIf
+\If{$\Call{isEmpty}{B}$}
+    \State \Return $A$
+\EndIf
+
+\
+
+\State $C  \gets \{\}$
+\State $i\_a  \gets 0$
+\State $i\_b  \gets 0$
+\State $endA \gets$ \Call{size}{$A$}
+\State $endB \gets$ \Call{size}{$B$}
+
+\
+
+\If{\Call{minElem}{$A_{endA - 1}$} $<$ \Call{minElem}{$B_0$}}
+    \State \Return $A \frown B$
+\EndIf
+
+\If{\Call{minElem}{$B_{endB - 1}$} $<$ \Call{minElem}{$A_0$}}
+    \State \Return $B \frown A$
+\EndIf
+
+\
+
+\For{;$i\_a \neq endA$ \textbf{and} $i\_b \neq endB$;}
+  \If{$A_{i\_a} < B_{i\_b}$} 
+    \State \Call{emplaceBack}{$C$, $A_{i\_a}$}
+    \State $i\_a$ \!+\!+
+  \Else 
+    \State \Call{emplaceBack}{$C$, $B_{i\_b}$}
+    \State $i\_b$ \!+\!+
+  \EndIf   
+\EndFor
+
+\
+
+\State $C \gets C \frown A_{i\_a:endA - 1}$
+\State $C \gets C \frown B_{i\_b:endB - 1}$
+
+\
+
+\State \Return $C$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+\newpage
+
+\begin{comment}
+    
+
+\section{OrderedSets - cup}
+
+En el caso de la operación \texttt{cup}, puede observarse que no se han introducido cambios con respecto a su versión homóloga utilizada para conjuntos desordenados. Esta coincidencia no es casual, sino que responde directamente a la forma en que dicha operación ha sido definida. Este diseño permite reutilizar la lógica sin necesidad de adaptaciones adicionales, lo cual representa una ventaja en términos de simplicidad y consistencia del código.
+
+\begin{algorithm}
+\caption{Unión de conjuntos ordenados (posible intersección)}\label{alg:unionGeneral}
+\begin{algorithmic}[1]
+\Require $A$ y $B$ son conjuntos ordenados
+\Ensure El resultado es la unión ordenada de $A$ y $B$
+\Function{cup}{$A,B$}
+
+\
+
+\If{$A == \emptyset$}
+    \State \Return $B$
+\EndIf
+\If{$B == \emptyset$ \textbf{or} $A == B$}
+    \State \Return $A$
+\EndIf
+
+\
+
+\If{\Call{maxElem}{$A$} $<$ \Call{minElem}{$B$}}
+    \State \Return $A \frown B$
+\EndIf
+
+\If{\Call{maxElem}{$B$} $<$ \Call{minElem}{$A$}}
+    \State \Return $B \frown A$
+\EndIf
+
+\
+
+\State $D \gets$ \Call{difference}{$B$, $A$} 
+\State \Return \Call{disjointCup}{$B$, $D$}
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+
+\newpage
+\section{OrderedSets - difference}
+
+Al igual que la operación \texttt{cup}, la operación \texttt{difference} no presenta modificaciones específicas respecto a su versión implementada con conjuntos desordenados. Por este motivo, cualquier mejora en su rendimiento proviene exclusivamente de las optimizaciones aplicadas a las operaciones subyacentes que utiliza.
+
+
+\begin{algorithm}
+\caption{Diferencia de conjuntos ordenados}\label{alg:two}
+\begin{algorithmic}[1]
+\Require $A$ y $B$ son conjuntos ordenados
+\Ensure El resultado es la diferencia ordenada de $A$ con $B$
+\Function{difference}{$A,B$}
+
+\ 
+
+\If{$A == \emptyset$ \textbf{or} $B == \emptyset$}
+    \State \Return $\emptyset$
+\EndIf
+
+\
+
+\If{\Call{maxElem}{$A$} $<$ \Call{minElem}{$B$}}
+    \State \Return $A$
+\EndIf
+
+\If{\Call{maxElem}{$B$} $<$ \Call{minElem}{$A$}}
+    \State \Return $A$
+\EndIf
+
+\
+
+\State $D \gets$ \Call{complement}{$B$}
+\State \Return \Call{intersection}{$A$, $D$}
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+\newpage
+\end{comment}
+
+
+\subsection{Complemento - \texttt{complement}}
+
+A continuación se presenta el pseudocódigo correspondiente a la implementación de la operación \texttt{complement} en \ref{alg:complement-conj-ord}, la cual es similar a su homóloga para conjuntos desordenados. 
+
+La única diferencia significativa radica en la incorporación parcial del \textbf{criterio de obviedad extendido}, generando un conjunto ordenado de multi-intervalos obviados $R$, que se pasa como argumento a la operación \texttt{intersectionComp}. En esta es donde se realizara la división de $A$ en los dos subconjuntos disjuntos que se mencionan en el criterio. 
+
+Este proceso puede observarse en las líneas 6 y 16, respectivamente.
+
+
+\begin{algorithm}
+\caption{Complemento de conjuntos ordenados}\label{alg:complement-conj-ord}
+\begin{algorithmic}[1]
+\Require $A$ es un conjunto ordenado
+\Ensure El resultado es el complemento ordenado de $A$
+\Function{complement}{$C$}
+
+\ 
+
+
+\If{$\Call{isEmpty}{C}$}
+    \State \Return $ \{\}$
+\EndIf
+
+\ 
+
+\State $A \gets  \{\}$
+\State $R \gets  \{\}$
+
+\ 
+
+\State $first\_mdi \gets A_0$
+\State $A \gets$ \Call{complementAtom}{$\{first\_mdi\}$}
+
+\
+
+\For{$i=1$; $i \neq \Call{size}{C}$ ; $i$ \!+\!+}
+    \State $mdi \gets C_i$
+    \State $atomic\_set \gets$ \Call{complementAtom}{$\{mdi\}$}
+    \State $A \gets$ \Call{intersectionComp}{$A, atomic\_set, mdi, R$}
+\EndFor
+
+\
+
+\State \Return \Call{disjointCup}{$R$, $A$}
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+
+\newpage
+\subsection{Complemento atómico - \texttt{complementAtom}}
+
+En lo que respecta a la operación \texttt{complementAtom}, esta debía mantenerse equivalente a su contraparte para conjuntos desordenados, pero incorporando el \textbf{criterio de ordenamiento} definido específicamente para esta operación.
+
+Como se puede observar en el pseudocódigo a continuación, dicho criterio se implementa mediante el uso de las variables numéricas $pos\_global$ y $pos\_local$ (línea 15 de la Parte 1 y línea 3 de la Parte 2), así como a través de la colocación ordenada de los elementos dentro del conjunto de salida $C$, en las líneas 10, 24 y 35.
+
+\begin{algorithm}
+\caption{Complemento atómico para conjuntos ordenados — Parte 1: Preparación}\label{alg:complementAtom-part1}
+\begin{algorithmic}[1]
+\Require $A$ es un conjunto ordenado atómico
+\Ensure $D$ es el complemento ordenado de $A$
+\Function{complementAtom}{$A$}
+
+  \State $C \gets \{\}$  
+  \State $mdi \gets A_0$  
+  \State $dense\_mdi \gets []$
+
+  \ForAll{$interval \in mdi$}
+    \State $b \gets$ \Call{begin}{$interval$}
+    \State $e \gets$ \Call{end}{$interval$}
+    \State \Call{emplaceBack}{$dense\_mdi, [b : 1 : e]$}
+  \EndFor
+
+  \State $during\_mdi \gets dense\_mdi$
+  \State $univ \gets [0:1:Inf]$
+  \State $a \gets$ \Call{arity}{$A$}
+  \State $all \gets univ^a$ \Comment{Universo de dimensión $a$}
+
+  \State $dim \gets 0$
+  \State $pos\_global \gets 0$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{Complemento atómico para conjuntos ordenados— Parte 2: Construcción y retorno}\label{alg:complementAtom-part2}
+\begin{algorithmic}[1]
+\Function{complementAtom}{}
+  \ForAll{$i \in mdi$}
+    \State $pos\_local \gets pos\_global$
+    \State $b \gets$ \Call{begin}{$i$}
+
+
+    \If{\Call{begin}{$i$} $\neq 0$}
+      \State $i\_res \gets [0:1:$ \Call{begin}{$i$}$-1]$
+      \If{$\neg \Call{isEmpty}{i\_res}$}
+        \State $all[dim] \gets i\_res$
+        \State $n \gets$ \Call{size}{$C$}
+        \State $C \gets C_{0:pos\_local - 1} \frown \{all\} \frown C_{pos\_local:n - 1}$
+        \State $pos\_local$ \!+\!+, \, $pos\_global$ \!+\!+
+        \State $all[dim] \gets univ$
+      \EndIf
+    \EndIf
+
+    \If{\Call{begin}{$i$} $<$ \texttt{Inf}}
+        \If{\Call{step}{$i$} $> 1$}
+          \For{$j = 0$; $i < size(A)$; $j$\!+\!+}
+            \State $h \gets [$\Call{begin}{$i$}$ + j + 1 : $\Call{step}{$i$} $: $ \Call{end}{$i$}$]$
+            \If{$\neg \Call{isEmpty}{h}$}
+              \State $during\_mdi[dim] \gets h$
+              \State $n \gets$ \Call{size}{$C$}
+              \State $C \gets C_{0: pos\_local - 1} \frown \{during\_mdi\} \frown C_{pos\_local:n - 1}$
+              \State $pos\_local$ \!+\!+
+            \EndIf
+          \EndFor
+        \EndIf
+    \EndIf
+
+    \If{\Call{end}{$i$} $<$ \texttt{Inf}}
+      \State $i\_res \gets [$\Call{end}{$i$}$+1 : 1 : \texttt{Inf}]$
+      \If{$\neg \Call{isEmpty}{i\_res}$}
+        \State $all[dim] \gets i\_res$
+        \State $n \gets$ \Call{size}{$C$}
+        \State $C \gets C_{0:pos\_local - 1} \frown \{all\} \frown C_{pos\_local:n - 1}$
+        \State $pos\_local \!+\!+$
+        \State $all_{dim} \gets univ$
+      \EndIf
+    \EndIf
+
+    \State $all[dim] \gets dense\_mdi[dim]$
+    \State $during\_mdi[dim] \gets i$
+    \State $dim$ \!+\!+
+  \EndFor
+
+  \State \Return $C$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+
+\newpage
+\subsection{Intersección complementaria - \texttt{intersectionComp}}
+
+Por último, se presenta la operación adicional \texttt{intersectionComp}, la cual permite calcular una intersección optimizada cuando se ejecuta la operación \texttt{complement}.
+
+Cabe recordar que esta operación es una variante de la operación \texttt{intersection} presentada anteriormente. Sin embargo, a diferencia de aquella, \texttt{intersectionComp} no implementa el \textbf{criterio de selección}, y en su lugar incorpora los tres criterios adicionales vistos con anterioridad:
+
+\begin{itemize}
+    \item Se implementa el \textbf{criterio de obviedad} y la parte faltante del \textbf{criterio de obviedad extendido}, ambos utilizando el multi-intervalo $Mdi$ . Esto puede observarse en la Parte 1, líneas 10 a 13 del pseudocódigo, donde se subdivide a $A$ en $Remnant$ y $A_{pos:\Call{size}{A}}$, que tienen los elementos que ya forman parte del resultado final del complemento y los elementos restantes a interseccionar, respectivamente.
+
+    \item En cuanto al \textbf{criterio de anti-particionamiento}, se lleva a cabo mediante el uso de la función auxiliar \texttt{doInt}, que permite realizar un chequeo de solapamiento entre los multi-intervalos de $A$, $a$; y los de $B$. En función de este resultado, se decide si realizar el recorrido por los elementos de $B$, o bien guardar directamente los multi-intervalo de $A$ en el conjunto resultado.
+\end{itemize}
+
+
+\begin{algorithm}
+\caption{Intersección complementaria para conjuntos ordenados — Parte 1: Preparación}
+\begin{algorithmic}[1]
+\Require $A$ y $B$ son conjuntos ordenados, $Remnant$ un conjunto ordenado, y $Mdi$ un multi-intervalo
+\Ensure $C$ es la intersección ordenada de los elementos necesarios $A$ y $B$
+\Function{intersectionComp}{$A, B, Remnant, Mdi$}
+    \State $C \gets \{\}$
+    
+    \If{\Call{isEmpty}{$A$} \textbf{or} \Call{isEmpty}{$B$}}
+        \State \Return $C$
+    \EndIf
+
+    \If{$A == B$}
+        \State \Return $A$
+    \EndIf
+
+    \ 
+    
+    \State $pos \gets 0$
+    
+    \While{$pos <$ \text{\Call{size}{$A$}} \textbf{and} \Call{maxElem}{$A_{pos}$}[0] < \Call{minElem}{$Mdi$}[0]}
+        \State \Call{emplaceBack}{$Remnant, A_{pos}$}
+        \State $pos$ \!+\!+
+    \EndWhile
+
+    
+    \ 
+    
+    \State $c\_pos \gets 0$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}
+\caption{Intersección complementaria para conjuntos ordenados — Parte 2: Construcción del resultado}
+\begin{algorithmic}[1]
+\Function{intersectionComp}{}
+\State $endA \gets$ \text{\Call{size}{$A$}}
+    \ForAll{$a \in  A_{pos:endA-1}$}
+        \State $do\_int \gets$ \Call{doInt}{$a, mdi$}
+        \State $\Call{advanceHint}{C, a, c\_pos}$
+    
+
+    \ 
+    
+        \State $i \gets 0$
+                
+    \
+
+
+
+        \If{$do\_int$}
+            \ForAll{$b \in B$}        
+            \State $b \gets B_{indices[i]}$
+
+            \If{\Call{doInt}{$b$,$a$}}
+                \State $inter \gets$ \Call{intersection}{$a, b$}
+                \If{$\neg$ \Call{isEmpty}{$inter$}}
+                    \State \Call{emplaceHint}{$C$,$inter$,$c\_pos$}
+                \EndIf
+            \EndIf
+        
+    
+        \EndFor
+   \
+        
+        \Else
+            \State \Call{emplaceHint}{$C, a, c\_pos$}
+        \EndIf
+        
+    \
+    
+
+    \EndFor
+            
+    \
+    
+    \State \Return{$C$}
+\EndFunction
+\end{algorithmic}
+\end{algorithm}

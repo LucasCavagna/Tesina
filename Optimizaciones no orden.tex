@@ -1,0 +1,226 @@
+\chapter{Optimizaciones para el desorden}
+
+Dado que tanto la implementación de los \textit{piecewise maps} como la de los conjuntos ordenados se basan en sus respectivas versiones desordenadas, ambas fueron revisadas y analizadas previamente y durante el desarrollo de las implementaciones ordenadas. Como resultado de este análisis, en la implementación de los \textit{piecewise maps} desordenados se identificaron varias funciones con un alto potencial de optimización, entre ellas: \texttt{composition}, \texttt{firstInv},\texttt{-}, \texttt{reduce} y \texttt{compact}. En contraste, otras funciones solo admitieron mejoras mínimas. Cabe destacar que las optimizaciones mencionadas anteriormente fueron posteriormente incorporadas en la implementación ordenada de los \textit{piecewise maps}, dado que, como se señaló, los \textit{piecewise maps} desordenados constituyeron el punto de partida para su desarrollo.
+
+Nuevamente, toda la notación empleada a lo largo de este capítulo, así como en el pseudocódigo, 
+puede consultarse en el \textbf{Apéndice~A}, donde se recopila la notación utilizada en esta tesina 
+junto con su correspondiente significado.
+
+\section{Optimización de la inserción de mapas no vacíos}
+
+En muchas de las operaciones disponibles para los \textit{piecewise maps} desordenados se realizan diversos cálculos para obtener los mapas que deben incorporarse en el resultado final. En la mayoría de los casos, dentro de dichas operaciones es necesario verificar que el mapa no sea vacío (es decir, que su dominio no sea vacío). Sin embargo, en un pequeño porcentaje de las operaciones esta verificación resulta innecesaria, ya que, en función de los procesos que lleva a cabo, se puede asegurar que el mapa no será vacío.
+
+A pesar de ello, esta situación no se aprovecha para omitir la verificación, dado que siempre que se inserta un mapa se emplea la operación \texttt{emplaceBack}, la cual comprueba que el dominio del mapa no sea vacío.
+
+Con el fin de mejorar este aspecto, se implementó una operación adicional, \texttt{pushBack}, que inserta mapas sin realizar dicha verificación. Las operaciones modificadas para utilizar \texttt{pushBack} son: \texttt{reduce} en todas sus variantes, \texttt{firstInv} que recibe un conjunto, \texttt{offsetDom} que recibe un natural multi-dimensional offset, \texttt{compact}, \texttt{-} y \texttt{offsetImage} en todas sus versiones.
+
+Es importante señalar que este cambio introduce una optimización prácticamente nula de manera aislada; no obstante, mientras más optimizadas estén las operaciones en su conjunto, mayor será el beneficio acumulado. Finalmente, no se presentará el pseudocódigo de estas operaciones, dado que la modificación es mínima. Las implementaciones correspondientes pueden consultarse en el repositorio de GitHub, en el archivo \textit{pwmap.cpp}, dentro de la carpeta \textit{sbg} \cite{sbg}.
+
+
+\section{Optimizando \texttt{reduce}}
+
+Esta operación, en particular la variante sin argumentos, fue incluida entre las operaciones que debían ser implementadas por las diferentes versiones de \textit{piecewise maps}. La versión inicial sin optimizaciones de la función puede verse en el pseudocódigo del Algoritmo~\ref{alg:reduce}, mientras que su versión modificada y optimizada se presenta en el Algoritmo~\ref{alg:reduce-opt}.
+
+En particular, se omitió la operación \texttt{concatenation}, ya que, si bien tiene un costo lineal en función de la suma de los tamaños de las \textit{piecewise maps} involucrados, su diseño obliga a copiar todos los elementos constantemente. Esto se debe a que la operación no modifica los \textit{piecewise maps} que recibe como argumentos. Como consecuencia, al repetirse múltiples veces, su costo acumulado resulta muy elevado. Por esta razón, se decidió prescindir de su uso, como puede observarse en el pseudocódigo del Algoritmo~\ref{alg:reduce-opt}.
+
+
+\begin{algorithm}
+\caption{Reducción de \textit{piecewise maps} desordenados optimizada}
+\label{alg:reduce-opt}
+\begin{algorithmic}[1]
+\Require $A$ es un \textit{piecewise map} desordenado
+\Ensure Devuelve un nuevo \textit{piecewise map} desordenado reducido
+\Function{reduce}{$A$}
+    \State $C := \ll\gg$
+    
+    \ForAll{$a \in A$}
+        \State $ith := \Call{reduce}{A,a}$
+        \ForAll{$i \in ith$}
+            \State $\mathrm{pushBack}(C,i)$
+        \EndFor
+    \EndFor
+
+    \State \Return $C$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+\section{Optimizando \texttt{-}}
+
+De manera análoga a la operación \texttt{reduce}, el operador \texttt{-} para los \textit{piecewise maps} desordenados puede optimizarse omitiendo la operación de \texttt{concatenation}. En el pseudocódigo del Algoritmo~\ref{alg:subUnordPWMap_part1_opt} se muestra esta modificación. Cabe aclarar que únicamente se presenta la parte del pseudocódigo que efectivamente cambió, mientras que todas las demás partes permanecen iguales.
+
+
+\begin{algorithm}
+	\caption{Resta de \textit{piecewise maps} desordenados optimizada: Parte 1: Preparación}
+	\label{alg:subUnordPWMap_part1_opt}
+	\begin{algorithmic}[1]
+		\Require $A$ y $B$ son dos \textit{piecewise maps}  desordenados
+		\Ensure Devuelve un \textit{piecewise map} desordenado que representa $A - B$ 
+		\Function{$-$}{$A, B$}
+		
+		\State $C := \ll\gg$ 
+		\State $dom\_a := \Call{dom}{A}$
+		\State $dom\_b := \Call{dom}{B}$ 
+		
+		\If{$\Call{isEmpty}{dom\_a}$ \textbf{or} $\Call{isEmpty}{dom\_b}$}
+		\State \Return $C$
+		\EndIf
+		
+		\State $d := \Call{arity}{A}$
+		\State $all := [0:1:\texttt{Inf}]$
+		\State $univ := \{|all|^d\}$
+		
+		\ForAll{$a \in A$}
+		\ForAll{$b \in B$}
+		\State $dom\_a := \Call{dom}{a}$
+		\State $dom\_b := \Call{dom}{b}$
+		\State $dom := \Call{intersection}{dom\_a, dom\_b}$
+		
+		\If{$\neg\,\Call{isEmpty}{dom}$}
+		\State $e\_a := \Call{exp}{a}$
+		\State $e\_b := \Call{exp}{b}$
+		\State $minus\_exp := \Call{minus}{e\_a, e\_b}$
+		\State $ith := \ll univ \mapsto [1*x+0]^d $
+		\State Parte 2...
+		
+		\State $restricted := \Call{restrict}{ith, dom}$ 
+		\State $C := C \frown restricted$
+		\EndIf
+		\EndFor
+		\EndFor
+		
+		\State \Return $C$
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+\section{Optimizando \texttt{composition}}
+
+Esta operación ya fue tratada en la sub-sección correspondiente a los \textit{piecewise maps} desordenados, y su pseudocódigo puede verse en el Algoritmo~\ref{alg:composition-des}. El problema principal con esta función es que repite dos veces el mismo proceso: calcula una restricción sobre el dominio del segundo argumento, basada en la intersección entre la imagen del segundo argumento y el dominio del primero. Sin embargo, este procedimiento ya se lleva a cabo durante la composición entre los mapas. Esto puede observarse en el archivo \texttt{map.cpp}, dentro del módulo \textit{sbg}, disponible en el repositorio.
+
+Como conclusión, la restricción previa a la composición de mapas resulta innecesaria. Para mejorar la legibilidad y evitar duplicación de procedimientos, se decidió dejar esta responsabilidad en manos de la implementación de mapas, eliminando así la restricción explícita presente en el Algoritmo~\ref{alg:composition-des}, quedando la función tal como se muestra en el Algoritmo~\ref{alg:composition-des-opt}.
+
+
+\begin{algorithm}
+\caption{Composición de \texttt{piecewise maps} desordenados optimizada}
+\label{alg:composition-des-opt}
+\begin{algorithmic}[1]
+\Require $A$ y $B$ son \textit{piecewise maps} desordenados.
+\Ensure Un nuevo \textit{piecewise map} desordenado $C$ que representa la composición de \texttt{A} con \texttt{B}
+\Function{composition}{$A,B$}
+    \State $C := \ll\gg$  
+    \ForAll{$a \in A$}
+        \ForAll{$b \in B$}
+            \State $c := \Call{composition}{a, b}$
+            \State \Call{emplaceBack}{$C, c$}
+        \EndFor
+    \EndFor
+    \State \Return $C$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+\section{Optimizando \texttt{compact}}
+
+Nuevamente se trata de una operación que se desarrolló en el Capítulo~\ref{sec:coseptos}. El pseudocódigo correspondiente se muestra en el Algoritmo~\ref{alg:compact}. La operación, en esencia, busca combinar en un solo mapa todos aquellos que comparten la misma expresión. 
+
+Sin embargo, como puede observarse, los mapas de $A$ vuelven a ser recorridos incluso después de haber sido compactados. Esto, sumado a las operaciones de conjuntos necesarias para evitar rehacer compactaciones (por ejemplo mediante el conjunto \texttt{compacted}), convierte a la operación en una de alto costo computacional.
+
+Como consecuencia, se desarrolló una versión optimizada, presentada en el pseudocódigo del Algoritmo~\ref{alg:compact-opt}. En esta versión se utiliza una lista simplemente enlazada, lo que permite evitar múltiples recorridos sobre los elementos ya compactados, así como descartar de forma eficiente aquellos que ya han sido procesados. Adicionalmente, se elimina una parte significativa de las operaciones de conjuntos, reduciendo considerablemente el costo de la operación.
+
+\begin{algorithm}
+\caption{Compactación de \textit{piecewise maps} desordenados optimizada}
+\label{alg:compact-opt}
+\begin{algorithmic}[1]
+\Require $A$ es un \textit{piecewise map} desordenado
+\Ensure Devuelve un \textit{piecewise maps} desordenados con los mapas compactados
+\Function{compact}{$A$}
+    \State $C := \ll\gg$
+    \State $dom := \Call{dom}{A}$
+
+    \If{\Call{isEmpty}{$dom$}}
+        \State \Return $C$
+    \EndIf
+
+    \State $size := \Call{size}{A}$
+    \State $indices := []$ \Comment{Es una lista simplemente enlazada}
+    \For{$i = 0$; $i < size$; $i := i + 1$}
+        \State $indices := indices$  \!+\!+  $[i]$
+    \EndFor
+        
+    \State $i := 0$
+                
+    \While{$i \neq \Call{length}{indices}$}
+        \State $m := A_{indices[i]}$
+        \State $dom\_m := \Call{dom}{m}$
+        \State $dom\_comp := \Call{compact}{dom\_m}$
+        \State $exp\_val := \Call{exp}{m}$
+        \State $new\_map := dom\_comp \rightarrow exp\_val$
+        \State $indices := indices \triangleleft  i$
+
+        \State $j := i + 1$
+        \While{$j \neq \Call{length}{indices}$}
+            \State $next := A_{indices[j]}$
+            \State $optional := \Call{compact}{new\_map,\;next}$
+
+            \If{$optional$}
+                \State $new\_map := \mathrm{value}(optional)$
+                \State $indices := indices 	\triangleleft  j$
+                \State \textbf{continue}
+            \EndIf
+
+            \State $j$ \!+\!+
+        \EndWhile
+
+        \State $\mathrm{pushBack}(C,new\_map)$
+        \State $i$ \!+\!+
+    \EndWhile
+
+    \State \Return $C$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+\section{Optimizando \texttt{firstInv}}
+
+Ahora es el turno de la operación \texttt{firstInv}.  
+Esta se encarga de mantener un conjunto de valores ya visitados, denominado $visited$, como se muestra en el pseudocódigo del Algoritmo~\ref{alg:firstInv}.  
+Sin embargo, la forma en que se almacenan los elementos dentro de este conjunto es un aspecto que podría optimizarse.
+
+En la versión original, se vuelve a calcular la imagen del mapa $a$ a partir del conjunto de entrada y luego se combina con $visited$ mediante la operación de unión de conjuntos. Este procedimiento recalcula un conjunto que ya está disponible y obliga a utilizar la operación \texttt{cup}, ya que los conjuntos no son disjuntos.
+
+Una optimización posible consiste en emplear directamente $res\_dom$, que contiene todos los elementos de la imagen que, además, no forman parte de $visited$.  
+De este modo, es posible utilizar la operación \texttt{disjointCup} para unir los conjuntos, aprovechando que son disjuntos.
+
+El código modificado y optimizado se presenta en el pseudocódigo del Algoritmo~\ref{alg:firstInv-opt}.
+
+
+
+
+\begin{algorithm}
+\caption{Pseudoinversa - \textit{piecewise maps} desordenados}
+\label{alg:firstInv-opt}
+\begin{algorithmic}[1]
+\Require $A$ es un \textit{piecewise map} desordenado, $S$ es un conjunto
+\Ensure Devuelve un \textit{piecewise map} desordenado cuyos mapas son pseudoinversas de los mapas restringidos de $A$ en base a $S$
+\Function{firstInv}{$A, S$}
+  \State $C :=\ll\gg$
+  \State $visited := \{\}$
+
+  \ForAll{$a \in A$}
+    \State $img := \Call{image}{a, S}$
+    \State $res\_dom := \Call{difference}{img, visited}$
+    \If{$\neg\,\Call{isEmpty}{res\_dom}$}
+      \State $pre := \Call{preImage}{a, res\_dom}$
+      \State $exp := \Call{exp}{a}$
+      \State $map := pre \rightarrow exp$
+      \State $inv\_map := \Call{minInv}{map}$
+      \State $\Call{pushBack}{C, inv\_map}$
+      \State $visited := \Call{disjointCup}{visited, res\_dom}$
+    \EndIf
+  \EndFor
+
+  \State \Return $C$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}

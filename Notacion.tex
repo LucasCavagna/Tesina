@@ -1,0 +1,119 @@
+\chapter*{Apéndice A: Notación}
+
+\begin{table}[h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{8cm}|c|p{12cm}|}
+
+
+\hline
+\multicolumn{3}{|c|}{\textbf{Notación}} \\ \hline
+\textbf{Hipótesis} & \textbf{Simbología} & \textbf{Significado} \\ \hline
+
+$a$, $b$ y $c$ son naturales & $[a:b:c]$ & Intervalo con inicio $a$, paso $b$ y fin $c$. \\ \hline
+
+ & \texttt{NAT} & Sinónimo de \texttt{unsigned long long} en C++, representa a los naturales. Siempre que se hable de naturales en el código se hace referencia a este tipo. \\ \hline
+
+
+
+
+  & \texttt{Interval} & Tipo que representa a los intervalos en C++. Siempre que se hable de intervalos en el código se hace referencia a este tipo. \\ \hline
+
+ & \texttt{Inf} & Valor máximo disponible para los naturales que es representado por \texttt{NAT}. \\ \hline
+
+& $[1 : 1 : 0]$ & Notación para el intervalo vació. \\ \hline
+
+$i_0 \times i_2 \times \dots i_{k-1}$ son intervalos & $i_0 \times i_2 \times \dots i_{k-1}$ & Multi-intervalo de $k$ dimensiones, es decir, con $k$ intervalos $i_0, i_2, \dots, i_{k-1}$. \\ \hline
+
+  &\texttt{MultiDimInter}/\texttt{SetPiece} & Tipos que representan a los multi-intervalos en C++. Siempre que se hable de multi-intervalos en el código se hace referencia al primero en cuanto a las operaciones de los multi-intervalos y al segundo en todas las demás ocasiones. \\ \hline
+
+ & \texttt{MD\_NAT} & Sinónimo de \texttt{vector<NAT>} en C++, representa a los naturales multi-dimensionales. Siempre que se hable de naturales multi-dimensionales en el código se hace referencia a este tipo. \\ \hline
+
+& $\{\}$ & Notación para el conjunto vació. \\ \hline
+
+ & \texttt{SetDelegate} & Tipo abstracto en C++, representa una interfaz común para todas las implementaciones concretas de conjuntos para aplicar el patrón de diseño \textit{delegate}. \\ \hline
+
+  & \texttt{Set} & Tipo que permite manipular conjuntos en \texttt{C++}. 
+Contiene alguna de las implementaciones concretas de conjuntos, lo que posibilita trabajar de manera independiente de la implementación específica utilizada, aplicando así el patrón de diseño \textit{Delegate}.
+ \\ \hline
+
+$mdi$ es un multi-intervalo e $i$ esta entre 0 y $k$ con $k$ siendo la cantidad de dimensiones de $mdi$& $mdi[i]$ & Es el intervalo de la dimensión $i$. \\ \hline
+
+ & $\emptyset_{mdi}$& Representa el multi-intervalo vacío, es decir, sin ningún intervalo. \\ \hline
+
+$A$ es un conjunto o \textit{piecewise map} & $kappa(A)$& Representa el numero de multi-intervalos del conjunto $A$ o de mapas del \textit{piecewise map} $A$ respectivamente. \\ \hline
+
+$a$, $b$, y $c$ objetos en C++ y $metod$ es un método de $a$ & $metod(a,b,c)$ & Representa \texttt{a.metod(b,c)} en C++, la instancia $a$ que invoca al método es el primer argumento. \\ \hline
+
+$a$, y $b$ objetos en C++ y $\#$ es un método/operador de $a$ & $a \# b$ & Representa \texttt{a.operador(b)} en C++. \\ \hline
+
+$A$ es un conjunto e $i$ esta entre 0 y $\kappa(A)-1$&  $A_i$& Es el $i$-ésimo multi-intervalo de $A$, corresponde a \texttt{pieces\_[i]} en C++.\\ \hline
+
+$i$ y $j$ son dos números naturales tal que $i < j$ y $A$ es un conjunto& $A_{i:j}$ & Es el subconjunto de $A = \{A_i, A_{i+1},\dots,A_{j}\}$. \\ \hline
+
+$i$ y $j$ son dos números naturales tal que $i > j$ y $A$ es un conjunto & $A_{i:j}$ & Es el subconjunto de $A = \{\}$. \\ \hline
+
+$A$ es un conjunto & $A_{0:-1}$ & Es el subconjunto de $A = \{\}$. \\ \hline
+
+
+$A$ es un \textit{piecewise map} desordenado e $i$ esta entre 0 y $\kappa(A)-1$&  $A_i$& Es el $i$-ésimo mapa de $A$, corresponde a \texttt{pieces\_[i]} en C++.\\ \hline
+
+
+$i$ es un intervalo y $k$ es un natural&  $i^k$& Es un multi-intervalo de dimensión $k$. \\ \hline
+
+$A$, $B$ conjuntos o \textit{piecewise maps} & $A \frown B$ & Devuelve un nuevo objeto que contiene primero los elementos de $A$ seguidos por los de $B$, es decir, una concatenación ordenada: $A_0, A_1, \ldots, B_0, B_1, \ldots$. \\ \hline
+
+&$\{\}$& Es un conjunto vacío, es decir, sin multi-intervalos. \\ \hline
+
+&$\ll\gg$& Es un \textit{piecewise map} vació, es decir, sin mapas. \\ \hline
+
+&$[]$& Es una lista simplemente enlazada. \\ \hline
+
+$l$ y $l'$ son listas simplemente enlazadas&$l$ \!+\!+ $l'$& Se concatenan las listas simplemente enlazadas, primero se colocan los elementos de $l$ y luego de $l'$. \\ \hline
+
+$list$ es una lista simplemente enlazada y $i$ es un elemento dentro de la lista &$list \triangleleft  i$& Elimina el elemento $i$-ésimo de la lista en cuestión. \\ \hline
+
+
+$a$ es un número natural  & $(a)^d$ & Es un natural multi-dimensional de longitud $d$ o de $d$ dimensiones donde en cada una vale $a$. \\ \hline
+$a$ y $b$ valores naturales multi-dimensionales & $\llcorner a,\,b\urcorner$ & Es un perímetro que es en sí un par de elementos. En este caso el perímetro contiene a $a$ y $b$. \\ \hline
+
+$m$ es un mapa y $p$ un perímetro & $\lfloor m,\,p\rceil$ & Es una entrada de mapa que es en sí un par de elementos. En este caso la entrada de mapa contiene a $m$ y $p$. \\ \hline
+
+\end{tabular}%
+}
+\end{table}
+
+
+\begin{table}[h]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{8cm}|c|p{12cm}|}
+
+
+\hline
+\multicolumn{3}{|c|}{\textbf{Notación}} \\ \hline
+\textbf{Hipótesis} & \textbf{Simbología} & \textbf{Significado} \\ \hline
+
+
+$A$ es un \textit{piecewise map} ordenado e $i$ está entre 0 y $\kappa(A)-1$&  $A_i$& Siendo el capitulo \textbf{\textit{piecewise maps} ordenados}, dentro de la sección:
+
+\begin{itemize}
+    \item \textbf{Criterios de optimización y ordenamientos}: Es el $i$-ésimo mapa de $A$, corresponde a \texttt{pieces\_[i].first} en C++.
+
+    \item \textbf{Implementaciones adicionales/Implementaciones}: Es la $i$-ésima entrada de mapa de $A$, corresponde a \texttt{pieces\_[i]} en C++.
+
+\end{itemize} \\ \hline
+
+$i$ y $j$ son dos números naturales tal que $i < j$ y $A$ es un \textit{piecewise map} ordenado& $A_{i:j}$ & Es el \textit{piecewise map} ordenado $\ll A_i, A_{i+1},\dots,A_{j}\gg$. \\ \hline
+
+$i$ y $j$ son dos números naturales tal que $i > j$ y $A$ es un \textit{piecewise map} ordenado & $A_{i:j}$ & Es el \textit{piecewise map} ordenado vacío $\ll\gg$. \\ \hline
+
+$A$ es un \textit{piecewise map} ordenado & $A_{0:-1}$ & Es el \textit{piecewise map} ordenado vacío $\ll\gg$. \\ \hline
+
+$e$ es una expresión lineal y $d$ un número natural & $e^d$ & Es una expresión lineal $d$ dimensional o de $d$ dimensiones tal que en todas sus dimensiones tiene la expresión $e$, tal que 
+$[e_0,e_1,\dots,e_{d-1}]$. \\ \hline
+
+
+\end{tabular}%
+}
+\end{table}

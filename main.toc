@@ -1,0 +1,128 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {chapter}{\numberline {1}Introducción}{5}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Estado del arte}{5}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}Motivación}{5}{subsection.1.1.1}%
+\contentsline {subsection}{\numberline {1.1.2}Objetivo general}{6}{subsection.1.1.2}%
+\contentsline {section}{\numberline {1.2}Organización de la tesina}{6}{section.1.2}%
+\contentsline {chapter}{\numberline {2}Conceptos Preliminares}{8}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Intervalos}{8}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Multi-intervalos}{10}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Conjuntos}{12}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Conjuntos generales}{13}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Conjuntos desordenados}{15}{subsection.2.3.2}%
+\contentsline {subsubsection}{\numberline {2.3.2.1}Intersección - \texttt {intersection}}{15}{subsubsection.2.3.2.1}%
+\contentsline {subsubsection}{\numberline {2.3.2.2}Complemento - \texttt {complement}}{15}{subsubsection.2.3.2.2}%
+\contentsline {subsubsection}{\numberline {2.3.2.3}Unión disjunta - \texttt {disjointCup}}{20}{subsubsection.2.3.2.3}%
+\contentsline {subsection}{\numberline {2.3.3}Conjuntos ordenados densos}{20}{subsection.2.3.3}%
+\contentsline {subsection}{\numberline {2.3.4}\textit {Abstract factory} para conjuntos}{22}{subsection.2.3.4}%
+\contentsline {section}{\numberline {2.4}Mapas lineales}{23}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}\textit {Abstract factory} de mapas}{24}{subsection.2.4.1}%
+\contentsline {section}{\numberline {2.5}Piecewise maps}{25}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Piecewise maps generales}{25}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}\textit {Abstract factory} de \textit {piecewise maps}}{28}{subsection.2.5.2}%
+\contentsline {subsection}{\numberline {2.5.3}\textit {Piecewise maps} desordenados}{28}{subsection.2.5.3}%
+\contentsline {subsubsection}{\numberline {2.5.3.1}Igualdad - \texttt {==}}{28}{subsubsection.2.5.3.1}%
+\contentsline {subsubsection}{\numberline {2.5.3.2}Suma - \texttt {+}}{30}{subsubsection.2.5.3.2}%
+\contentsline {subsubsection}{\numberline {2.5.3.3}Resta - \texttt {-}}{30}{subsubsection.2.5.3.3}%
+\contentsline {subsubsection}{\numberline {2.5.3.4}Restricción de dominio - \texttt {Restrict}}{33}{subsubsection.2.5.3.4}%
+\contentsline {subsubsection}{\numberline {2.5.3.5}Composición - \texttt {composition}}{33}{subsubsection.2.5.3.5}%
+\contentsline {subsubsection}{\numberline {2.5.3.6}Concatenacion - \texttt {concatenation}}{34}{subsubsection.2.5.3.6}%
+\contentsline {subsubsection}{\numberline {2.5.3.7}Combinacion - \texttt {combine}}{34}{subsubsection.2.5.3.7}%
+\contentsline {subsubsection}{\numberline {2.5.3.8}Mínimo adyacente - \texttt {minAdjMap}}{34}{subsubsection.2.5.3.8}%
+\contentsline {subsubsection}{\numberline {2.5.3.9}Pseudoinversa - \texttt {firstInv}}{35}{subsubsection.2.5.3.9}%
+\contentsline {subsubsection}{\numberline {2.5.3.10}Igualdad de imágenes - \texttt {equalImage}}{35}{subsubsection.2.5.3.10}%
+\contentsline {subsubsection}{\numberline {2.5.3.11}Desplazamiento de dominio - \texttt {offsetDom}}{35}{subsubsection.2.5.3.11}%
+\contentsline {subsubsection}{\numberline {2.5.3.12}Reducción - \texttt {reduce}}{38}{subsubsection.2.5.3.12}%
+\contentsline {subsubsection}{\numberline {2.5.3.13}Compactación - \texttt {compact}}{38}{subsubsection.2.5.3.13}%
+\contentsline {chapter}{\numberline {3}Optimizaciones para el desorden}{40}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Optimización de la inserción de mapas no vacíos}{40}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Optimizando \texttt {reduce}}{40}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Optimizando \texttt {-}}{41}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Optimizando \texttt {composition}}{41}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Optimizando \texttt {compact}}{41}{section.3.5}%
+\contentsline {section}{\numberline {3.6}Optimizando \texttt {firstInv}}{43}{section.3.6}%
+\contentsline {chapter}{\numberline {4}Conjuntos ordenados}{45}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Estructura y orden}{45}{section.4.1}%
+\contentsline {section}{\numberline {4.2}\textit {Abstarct factory}}{46}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Criterios de optimización y ordenamiento}{46}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Intersección - \texttt {intersection}}{46}{subsection.4.3.1}%
+\contentsline {subsubsection}{\numberline {4.3.1.1}Criterios de optimización}{46}{subsubsection.4.3.1.1}%
+\contentsline {subsubsection}{\numberline {4.3.1.2}Criterio de ordenamiento}{52}{subsubsection.4.3.1.2}%
+\contentsline {subsection}{\numberline {4.3.2}Unión disjunta - \texttt {disjointCup}}{53}{subsection.4.3.2}%
+\contentsline {subsubsection}{\numberline {4.3.2.1}Criterio de ordenamiento}{54}{subsubsection.4.3.2.1}%
+\contentsline {subsection}{\numberline {4.3.3}Complemento - \texttt {complement / complementAtom}}{54}{subsection.4.3.3}%
+\contentsline {subsubsection}{\numberline {4.3.3.1}Complemento atómico(\texttt {complementAtom})}{54}{subsubsection.4.3.3.1}%
+\contentsline {subsubsection}{\numberline {4.3.3.2}Complemento general}{56}{subsubsection.4.3.3.2}%
+\contentsline {section}{\numberline {4.4}Implementaciones}{59}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Calculo de solapamiento - \texttt {doInt}}{60}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Inserción con pista - \texttt {emplaceHint}}{60}{subsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.4.3}Avance con pista - \texttt {advanceHint}}{60}{subsection.4.4.3}%
+\contentsline {section}{\numberline {4.5}Implementaciones}{60}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}Operaciones sin cambios}{62}{subsection.4.5.1}%
+\contentsline {subsection}{\numberline {4.5.2}Operaciones adaptadas al orden}{62}{subsection.4.5.2}%
+\contentsline {subsection}{\numberline {4.5.3}Operaciones optimizadas}{62}{subsection.4.5.3}%
+\contentsline {subsubsection}{\numberline {4.5.3.1}Intersección - \texttt {intersection}}{62}{subsubsection.4.5.3.1}%
+\contentsline {subsubsection}{\numberline {4.5.3.2}Unión disjunta - \textit {disjointCup}}{64}{subsubsection.4.5.3.2}%
+\contentsline {subsubsection}{\numberline {4.5.3.3}Complemento - \texttt {complement}}{67}{subsubsection.4.5.3.3}%
+\contentsline {subsubsection}{\numberline {4.5.3.4}Complemento atómico - \texttt {complementAtom}}{68}{subsubsection.4.5.3.4}%
+\contentsline {subsubsection}{\numberline {4.5.3.5}Intersección complementaria - \texttt {intersectionComp}}{70}{subsubsection.4.5.3.5}%
+\contentsline {chapter}{\numberline {5}\textit {Piecewise maps} ordenados}{72}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Estructura y orden}{72}{section.5.1}%
+\contentsline {section}{\numberline {5.2}\textit {Abstarct factory}}{74}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Criterios de optimización y ordenamiento}{74}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Operaciones estructuralmente similares}{75}{subsection.5.3.1}%
+\contentsline {subsubsection}{\numberline {5.3.1.1}Criterios de optimización}{76}{subsubsection.5.3.1.1}%
+\contentsline {subsubsection}{\numberline {5.3.1.2}Criterios validos por operación}{77}{subsubsection.5.3.1.2}%
+\contentsline {subsection}{\numberline {5.3.2}Restricción de dominio - \texttt {restrict}}{81}{subsection.5.3.2}%
+\contentsline {subsubsection}{\numberline {5.3.2.1}Criterios de optimización}{81}{subsubsection.5.3.2.1}%
+\contentsline {subsubsection}{\numberline {5.3.2.2}Criterio de ordenamiento}{81}{subsubsection.5.3.2.2}%
+\contentsline {subsection}{\numberline {5.3.3}Combinación - \texttt {combine}}{82}{subsection.5.3.3}%
+\contentsline {subsubsection}{\numberline {5.3.3.1}Criterio de optimización}{82}{subsubsection.5.3.3.1}%
+\contentsline {subsubsection}{\numberline {5.3.3.2}Criterio de ordenamiento}{83}{subsubsection.5.3.3.2}%
+\contentsline {subsection}{\numberline {5.3.4}Concatenación - \texttt {concatenation}}{83}{subsection.5.3.4}%
+\contentsline {subsubsection}{\numberline {5.3.4.1}Criterio de ordenamiento}{84}{subsubsection.5.3.4.1}%
+\contentsline {subsection}{\numberline {5.3.5}Desplazamiento de dominio - \texttt {offsetDom}}{84}{subsection.5.3.5}%
+\contentsline {subsubsection}{\numberline {5.3.5.1}Criterios de optimización}{84}{subsubsection.5.3.5.1}%
+\contentsline {subsection}{\numberline {5.3.6}Composición - \texttt {composition}}{85}{subsection.5.3.6}%
+\contentsline {subsubsection}{\numberline {5.3.6.1}Criterios de optimización}{85}{subsubsection.5.3.6.1}%
+\contentsline {subsubsection}{\numberline {5.3.6.2}Criterio de ordenamiento}{86}{subsubsection.5.3.6.2}%
+\contentsline {subsection}{\numberline {5.3.7}Pseudoinversa - \texttt {firstInv}}{86}{subsection.5.3.7}%
+\contentsline {subsubsection}{\numberline {5.3.7.1}Criterios de optimización}{87}{subsubsection.5.3.7.1}%
+\contentsline {section}{\numberline {5.4}Implementaciones adicionales}{88}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Calculo de perímetro - \texttt {calculatePerimeter}}{89}{subsection.5.4.1}%
+\contentsline {subsection}{\numberline {5.4.2}Cálculo de solapamiento - \texttt {doInt}}{89}{subsection.5.4.2}%
+\contentsline {subsection}{\numberline {5.4.3}Creación de entradas de mapas - \texttt {createMapEntry}}{89}{subsection.5.4.3}%
+\contentsline {subsection}{\numberline {5.4.4}Comparación de entradas de mapas - \texttt {mapEntryComp}}{90}{subsection.5.4.4}%
+\contentsline {subsection}{\numberline {5.4.5}Agregar entrada al final - \texttt {pushBack}}{90}{subsection.5.4.5}%
+\contentsline {subsection}{\numberline {5.4.6}Agregar mapa al final - \texttt {pushBack}}{90}{subsection.5.4.6}%
+\contentsline {subsection}{\numberline {5.4.7}Inserción con pista - \texttt {emplaceHint}}{91}{subsection.5.4.7}%
+\contentsline {subsection}{\numberline {5.4.8}Avance de pista - \texttt {advanceHint}}{91}{subsection.5.4.8}%
+\contentsline {section}{\numberline {5.5}Implementaciones}{92}{section.5.5}%
+\contentsline {subsection}{\numberline {5.5.1}Operaciones sin cambios}{92}{subsection.5.5.1}%
+\contentsline {subsection}{\numberline {5.5.2}Operaciones adaptadas al orden}{92}{subsection.5.5.2}%
+\contentsline {subsection}{\numberline {5.5.3}Operaciones optimizadas}{93}{subsection.5.5.3}%
+\contentsline {subsubsection}{\numberline {5.5.3.1}Operaciones estructuralmente similares}{93}{subsubsection.5.5.3.1}%
+\contentsline {subsubsection}{\numberline {5.5.3.2}Restricción de dominio - \texttt {restrict}}{101}{subsubsection.5.5.3.2}%
+\contentsline {subsubsection}{\numberline {5.5.3.3}Combinación - \texttt {combine}}{101}{subsubsection.5.5.3.3}%
+\contentsline {subsubsection}{\numberline {5.5.3.4}Concatenación - \texttt {concatenation}}{103}{subsubsection.5.5.3.4}%
+\contentsline {subsubsection}{\numberline {5.5.3.5}Composición - \texttt {composition}}{103}{subsubsection.5.5.3.5}%
+\contentsline {subsubsection}{\numberline {5.5.3.6}Pseudoinversa - \texttt {firstInv}}{107}{subsubsection.5.5.3.6}%
+\contentsline {subsubsection}{\numberline {5.5.3.7}Desplazamiento de dominio - \texttt {offsetDom}}{107}{subsubsection.5.5.3.7}%
+\contentsline {chapter}{\numberline {6}Resultados}{110}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Casos de prueba sintéticos para conjuntos ordenados}{110}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Casos de prueba sintéticos para \textit {piecewise maps} ordenados}{119}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Casos de prueba}{127}{section.6.3}%
+\contentsline {subsection}{\numberline {6.3.1}Caso de prueba en una dimensión}{128}{subsection.6.3.1}%
+\contentsline {subsection}{\numberline {6.3.2}Escalado - Caso de prueba en una dimensión}{129}{subsection.6.3.2}%
+\contentsline {subsubsection}{\numberline {6.3.2.1}Escalado del \textit {Total Match exec time}}{129}{subsubsection.6.3.2.1}%
+\contentsline {subsubsection}{\numberline {6.3.2.2}Escalado del \textit {Total SCC exec time}}{130}{subsubsection.6.3.2.2}%
+\contentsline {subsubsection}{\numberline {6.3.2.3}Escalado del \textit {Total topological sort exec time}}{131}{subsubsection.6.3.2.3}%
+\contentsline {subsubsection}{\numberline {6.3.2.4}Escalado del \textit {Total time}}{132}{subsubsection.6.3.2.4}%
+\contentsline {subsection}{\numberline {6.3.3}Caso de prueba en dos dimensiones}{132}{subsection.6.3.3}%
+\contentsline {subsection}{\numberline {6.3.4}Escalado - Caso de prueba en dos dimensiones}{134}{subsection.6.3.4}%
+\contentsline {subsubsection}{\numberline {6.3.4.1}Escalado del \textit {Total Match exec time}}{134}{subsubsection.6.3.4.1}%
+\contentsline {subsubsection}{\numberline {6.3.4.2}Escalado del \textit {Total SCC exec time}}{135}{subsubsection.6.3.4.2}%
+\contentsline {subsubsection}{\numberline {6.3.4.3}Escalado del \textit {Total time}}{135}{subsubsection.6.3.4.3}%
+\contentsline {chapter}{\numberline {7}Conclusiones finales y trabajos futuros}{138}{chapter.7}%
+\contentsline {chapter}{Apéndice A: Notación}{140}{section*.69}%
+\contentsline {chapter}{Bibliografía}{142}{table.caption.72}%

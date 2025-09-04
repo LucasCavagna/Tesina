@@ -1,0 +1,193 @@
+\documentclass[10pt]{book}
+\usepackage[utf8]{inputenc}
+%\usepackage{vmargin}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{color}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{cite}
+\usepackage{subcaption}
+\usepackage{graphicx}
+% Reduce espacio vertical antes y después de los entornos algorithm
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\@algocf@start}
+{\vskip\algomargin}
+{\vskip\algomargin \vspace{-0.8em}} % Ajusta -0.8em según lo que necesites
+{}{}
+\patchcmd{\@algocf@finish}
+{\vskip\algomargin}
+{\vskip\algomargin \vspace{-0.8em}} % Idem
+{}{}
+\makeatother
+
+\usepackage{array} % Asegurate de tener esto en el preámbulo
+\usepackage{tabularx}
+
+\usepackage[a4paper, top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+
+\usepackage{lscape}
+\usepackage{changepage}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+
+\usepackage{dirtree}
+\usepackage{framed}
+\usepackage{xcolor}
+\usepackage{listings}
+
+%New colors defined below
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+%Code listing style named "mystyle"
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour}, commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2
+}
+
+%"mystyle" code listing set
+\lstset{style=mystyle}
+
+\usepackage[skins]{tcolorbox}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[mathscr]{eucal}
+
+
+\titleformat{\chapter}[display]
+{\normalfont\bfseries\fontsize{14}{16}\selectfont}{\chaptertitlename\ \thechapter}{14pt}{\Large}
+\titleformat{\section}
+{\normalfont\bfseries\fontsize{12}{14}\selectfont}{\thesection}{1em}{}
+\titleformat{\subsection}
+{\normalfont\bfseries\fontsize{12}{14}\selectfont}{\thesubsection}{1em}{}
+
+% Cambiar el espaciado entre párrafos
+\setlength{\parskip}{6pt}
+\setstretch{1.1}
+
+\makeatletter
+\renewcommand\tableofcontents{%
+	\null\hfill\textbf{\Huge\contentsname}\hfill\null\par
+	\@mkboth{\MakeUppercase\contentsname}{\MakeUppercase\contentsname}%
+	\@starttoc{toc}%
+}
+\usepackage{tocloft}
+\usepackage{float}
+% Capítulos
+\setlength{\cftchapnumwidth}{3em}
+
+% Secciones
+\setlength{\cftsecnumwidth}{3.5em}    % prueba 2.5em, 3em…
+
+% Subsecciones
+\setlength{\cftsubsecnumwidth}{3em} % ajusta según la longitud de los números
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{3}
+
+
+\renewcommand\cftchapfont{\LARGE\bfseries}
+\renewcommand\cftsecfont{\LARGE}
+
+\renewcommand\cftchappagefont{\LARGE\bfseries}
+\renewcommand\cftsecpagefont{\LARGE}
+\makeatother
+\renewcommand\cftchapafterpnum{\par\addvspace{8pt}}
+\renewcommand\cftsecafterpnum{\par\addvspace{4pt}}
+\renewcommand\cftsubsecafterpnum{\par\addvspace{2pt}}
+\renewcommand\cftsubsubsecafterpnum{\par\addvspace{1pt}}
+\renewcommand\cftsubsubsecfont{\normalsize}
+\renewcommand\cftsubsubsecpagefont{\normalsize}
+
+\setlength{\cftsubsubsecindent}{4em}
+\setlength{\cftsubsubsecnumwidth}{4em}
+
+\titleformat{\chapter}
+{\normalfont\LARGE\bfseries}{\thechapter}{1em}{}
+\titlespacing*{\chapter}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+
+
+\usepackage{sectsty}
+\sectionfont{\Large}        % tamaño para \section
+\subsectionfont{\large}     % tamaño para \subsection
+\subsubsectionfont{\normalsize} % para \subsubsection
+
+
+\begin{document}
+
+\begin{titlepage}
+	\centering
+	{\bfseries\LARGE Universidad Nacional de Rosario \par}
+	\vspace{0.5cm}
+	{\scshape\Large Facultad de Ciencias Exactas, Ingeniería y Agrimensura \par}
+	\vspace{1cm}
+	\begin{center}
+		\includegraphics[scale=2.3]{figures/LogoUnr.jpg}
+	\end{center}
+	\vspace{0.5cm}
+	{\scshape\Huge\bf Licenciatura en ciencias de la computación\par}
+	\vspace{0.5cm}
+	{\scshape\Huge Tesina \par}
+	\vspace{1cm}
+	{\itshape\Huge Optimización de algoritmos para grafos basados en conjuntos\par}
+	\vspace{1cm}
+	{\Large Cavagna, Lucas Gastón (Estudiante) \par}
+	{\Large Kofman, Ernesto (Director) \par}
+	{\Large Marzorati, Denise (Codirectora) \par}
+	\vspace{0.15cm} 
+	{\Large Septiembre 2025\par}
+\end{titlepage}
+\include{Agradecimientos}
+
+\tableofcontents
+\include{commands}
+\include{Introduccion}
+\let\cleardoublepage\clearpage
+\include{Conceptos Preliminares}
+\include{Optimizaciones no orden}
+\include{Conjuntos Ordenados}
+\include{PWMaps Ordenados}
+%\include{Orden}
+%\include{Optimizaciones conj}
+%\include{Optimizaciones PWmap}
+%\include{Implementaciones conj}
+%\include{Implementaciones PWMap}
+\include{Rendimiento}
+
+
+\include{Conclusiones}
+
+
+\appendix
+\renewcommand{\thechapter}{Apéndice~\Alph{chapter}}
+\addcontentsline{toc}{chapter}{Apéndice A: Notación}
+\include{Notacion}
+
+%\chapter{Bibliografía}
+
+%\appendix
+\bibliographystyle{plain}
+\addcontentsline{toc}{chapter}{Bibliografía} % si usas libro o report
+\bibliography{refs} 
+
+\end{document}

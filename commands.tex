@@ -1,0 +1,13 @@
+\newlength{\imagewidth}
+
+\newcommand{\subgraphics}[2]{%
+\begin{subfigure}[t]{0.55\textwidth}  % Usa un ancho fijo que permita al caption tener más espacio
+    \centering
+    \includegraphics[width=\linewidth]{#1}  % Se adapta al ancho disponible
+    
+    \caption{\centering #2}
+\end{subfigure}%
+}
+
+
+

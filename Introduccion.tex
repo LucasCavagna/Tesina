@@ -1,0 +1,62 @@
+
+\chapter{Introducción}
+\section{Estado del arte}
+\subsection{Motivación}
+
+Con el objetivo de unificar los distintos lenguajes empleados en herramientas de modelado y simulación, un consorcio integrado por compañías de software y grupos de investigación propuso un lenguaje de modelado abierto, unificado y orientado a objetos: \textbf{Modelica}\cite{fritzson1998modelica}\cite{fritzson2002modelica}.
+
+Este lenguaje permite la representación de sistemas de tiempo continuo, tiempo discreto, eventos discretos y modelos híbridos. Los modelos elementales en Modelica se expresan mediante conjuntos de ecuaciones diferenciales y algebraicas. A su vez, estos modelos pueden interconectarse, lo que facilita el desarrollo de modelos más complejos y reutilizables.
+
+Los compiladores del lenguaje Modelica tienen la tarea de transformar un modelo orientado a objetos en código de simulación. Este proceso implica varias etapas, en las cuales se produce la identificación y el ordenamiento de las ecuaciones que definen el comportamiento del modelo. 
+
+Hacia el año 2015, las principales herramientas de compilación de modelos Modelica existentes \cite{fritzson2020openmodelica}\cite{dempsey2006dymola}\cite{rozhdestvensky2020description} no aprovechaban adecuadamente ciertas características relacionadas con los arreglos y las ecuaciones for. En particular, estas ecuaciones eran expandidas y la vectorización era eliminada desde las primeras etapas del proceso de compilación, lo cual afectaba significativamente el rendimiento del compilador.
+Para abordar este problema, se desarrolló un algoritmo de aplanado  \cite{bergero2015efficient} que preservaba la vectorización de los modelos, manteniendo tanto los arreglos como las ecuaciones for. Dicho algoritmo calcula las componentes conexas en un grafo vectorizado, con el objetivo de reemplazar correctamente las conexiones presentes en los modelos por sus correspondientes ecuaciones.
+
+
+En 2019, se presentaron nuevos algoritmos diseñados para convertir de forma eficiente grandes sistemas de Ecuaciones Diferenciales Algebraicas (DAEs) en Ecuaciones Diferenciales Ordinarias (ODEs)  \cite{ZFK19}. Estos algoritmos se basan en procedimientos ya conocidos tales como el de Edmonds-Karp para maximum matching, o el de Tarjan para componentes fuertemente conexas, apoyándose en un concepto innovador denominado Grafo Basado en Conjuntos (Set-Based Graph o SBG). Una de sus principales ventajas es que permiten representar los sistemas de ecuaciones sin necesidad de expandir los arreglos de incógnitas y las ecuaciones tipo for, lo que hace que la complejidad del algoritmo sea independiente del tamaño de los arreglos. Es en este contexto que se introduce por primera vez la biblioteca SBG en ModelicaCC.
+
+Finalmente, en el año 2020, se rediseño la librería SBG para ModelicaCC \cite{marzorati20}, incorporando una amplia variedad de definiciones, tales como intervalos, multi-intervalos, conjuntos y mapas lineales. Estos avances estuvieron orientados al desarrollo e implementación de un algoritmo para la detección de componentes conexas, que forma parte de la primera
+etapa de conversión de modelos orientados a objetos en sistemas de ecuaciones. 
+
+
+Posteriormente, en 2022, la librería fue refinada en el marco del desarrollo de un nuevo trabajo, donde se convirtió en un nuevo proyecto independiente de ModelicaCC\cite{marzorati2022efficient}. Así, finalmente, se llega al estado actual de la misma con los últimos cambios propuestos en un escrito de 2024 \cite{marzorati2024efficient}.
+
+
+\subsection{Objetivo general}
+
+Actualmente, dentro de la librería SBG se emplean conjuntos \textit{compactos}. 
+El término \textit{compacto} hace referencia a la forma en que estos conjuntos representan 
+los elementos que contienen: mediante un número acotado de valores es posible 
+describir una colección mucho más amplia. Los conjuntos compactos están conformados por una colección de multi-intervalos de igual dimensión. Cada multi-intervalo se compone de una colección de intervalos individuales, donde dicha cantidad define la dimensión del multi-intervalo. Estos intervalos representan subconjuntos de números naturales mediante una tripleta que especifica sus elementos: valor de inicio, paso y valor final. Mientras, los elementos de cada multi-intervalo son los que pertenecen al producto cartesiano de los intervalos que lo componen.
+
+Bajo estas definiciones, existen actualmente dos implementaciones disponibles para conjuntos: \textit{unordered sets} (conjuntos desordenados) y \textit{ordered dense sets} (conjuntos ordenados densos). Esta última implementación contempla el orden únicamente en aquellos casos en los que los conjuntos están constituidos por multi-intervalos unidimensionales, compuestos por intervalos con paso igual a uno.
+
+Por otro lado, se encuentran los \textit{piecewise maps}, que se definen como una colección de mapas. Cada mapa está compuesto por un conjunto y una expresión lineal multi-dimensional. En este contexto, cada expresión lineal se asocia a una dimensión del conjunto. De esta manera, el dominio de cada expresión queda definido por la dimensión correspondiente del conjunto.
+
+En el caso de los \textit{piecewise maps}, actualmente solo se encuentra disponible una única implementación: \textit{unordered piecewise maps} (\textit{piecewise maps} desordenados). Esto significa que, hasta el momento, no existe una versión que aproveche el orden en ningún nivel dentro de los \textit{piecewise maps}.
+
+Uno de los objetivos de este trabajo, desde una perspectiva más general, es el desarrollo de una implementación eficiente de conjuntos ordenados que pueda manejar mas de una dimensión y un paso igual o distinto a uno. Esta implementación tiene como meta que las operaciones definidas sobre dichos conjuntos alcancen un rendimiento comparable al de la implementación existente para conjuntos ordenados densos, y que superen el desempeño observado en los conjuntos desordenados. A su vez, se persigue que dichas operaciones escalen, en la medida de lo posible, de manera lineal o lo mas cercano posible respecto a la cantidad de multi-intervalos que componen cada conjunto.
+
+Adicionalmente, otro objetivo relevante consiste en diseñar una versión ordenada de los \textit{piecewise maps}, que permita mejorar el rendimiento en comparación con la implementación desordenada disponible actualmente.
+
+\section{Organización de la tesina}
+
+Este escrito se divide en varios capítulos, cada uno con la tarea de explicar y exponer diferentes conceptos. En particular, los mismos son:
+
+\begin{enumerate}
+    \item \textbf{Introducción:} El capítulo actual introduce los objetivos de la tesina y desde dónde se empezó a componer la misma.
+    
+    \item \textbf{Conceptos Preliminares:} Capítulo que expondrá todos los conceptos base necesarios para entender por completo lo analizado en esta tesina.
+    
+    \item \textbf{Optimizaciones para el desorden:} Este capítulo se centra únicamente en algunas mejoras algorítmicas aplicadas a ciertas funciones que no dependen del orden, pero que resulta importante mencionar ya que favorecieron significativamente el rendimiento de las operaciones en general.
+    
+    \item \textbf{Conjuntos ordenados:} En este capitulo se describirá la estructura interna de los conjuntos ordenados, junto con el criterio de orden que se les asigna. Además, se presentarán de manera detallada los criterios de optimización y de ordenamiento aplicables a las operaciones de dichos conjuntos, explicando cada uno en profundidad. También se incluirán las funciones necesarias para el correcto funcionamiento de los conjuntos ordenados, que si bien no forman parte del núcleo principal de sus métodos, resultan esenciales para su implementación. Finalmente, se expondrán los métodos específicos de los conjuntos ordenados, en base a las optimizaciones y a su representación interna.
+
+
+    \item \textbf{\textit{Piecewise maps} ordenados:} En este capítulo se describirá la estructura interna de los \textit{piecewise maps} ordenados, junto con el criterio de orden que se les asigna. Asimismo, se presentarán en detalle los criterios de optimización y de ordenamiento aplicables a las operaciones de dichos \textit{piecewise maps}, explicando cada uno en profundidad. También se incluirán las funciones necesarias para su correcto funcionamiento, que si bien no forman parte del núcleo principal de sus métodos, resultan esenciales para su implementación. Finalmente, se expondrán los métodos específicos de los \textit{piecewise maps} ordenados, fundamentados en las optimizaciones y en su representación interna.
+    
+    \item \textbf{Resultados:} Aquí se presentarán múltiples casos de prueba y casos de prueba sintéticas para evidenciar la mejora que aportan las dos implementaciones basadas en el orden propuestas en este escrito.
+    
+    \item \textbf{Conclusiones finales y trabajos futuros:} En este último capítulo se presentan las conclusiones finales de la tesina, teniendo en cuenta los resultados obtenidos en el capítulo anterior. Así como tambien posibles trabajos futuros en base a lo visto durante el desarrollo de este escrito.
+\end{enumerate}
+

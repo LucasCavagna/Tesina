@@ -1,0 +1,75 @@
+\begin{thebibliography}{10}
+
+\bibitem{bergero2015efficient}
+Federico Bergero, Mariano Botta, and Ernesto Kofman.
+\newblock Efficient compilation of large scale modelica models.
+\newblock In {\em 11th International Modelica Conference}, 2015.
+
+\bibitem{sbg}
+{CIFASIS}.
+\newblock {CIFASIS/sb-graph}.
+\newblock \url{https://github.com/CIFASIS/sb-graph/tree/sb-graph-dev}, 2025.
+\newblock Repositorio en GitHub.
+
+\bibitem{dempsey2006dymola}
+Mike Dempsey.
+\newblock Dymola for multi-engineering modelling and simulation.
+\newblock In {\em 2006 IEEE Vehicle Power and Propulsion Conference}, pages
+  1--6. IEEE, 2006.
+
+\bibitem{fritzson2002modelica}
+Peter Fritzson and Peter Bunus.
+\newblock Modelica-a general object-oriented language for continuous and
+  discrete-event system modeling and simulation.
+\newblock In {\em Proceedings 35th Annual Simulation Symposium. SS 2002}, pages
+  365--380. IEEE, 2002.
+
+\bibitem{fritzson1998modelica}
+Peter Fritzson and Vadim Engelson.
+\newblock Modelica—a unified object-oriented language for system modeling and
+  simulation.
+\newblock In {\em European Conference on Object-Oriented Programming}, pages
+  67--90. Springer, 1998.
+
+\bibitem{fritzson2020openmodelica}
+Peter Fritzson, Adrian Pop, Karim Abdelhak, Adeel Asghar, Bernhard Bachmann,
+  Willi Braun, Daniel Bouskela, Robert Braun, Lena Buffoni, Francesco Casella,
+  et~al.
+\newblock The openmodelica integrated environment for modeling, simulation, and
+  model-based development.
+\newblock {\em Modeling, Identification and Control}, 41(4):241--295, 2020.
+
+\bibitem{marzorati2022efficient}
+Denise Marzorati, Joaquin Fern{\'a}ndez, and Ernesto Kofman.
+\newblock Efficient connection processing in equation--based object--oriented
+  models.
+\newblock {\em Applied Mathematics and Computation}, 418:126842, 2022.
+
+\bibitem{marzorati2024efficient}
+Denise Marzorati, Joaqu{\'\i}n Fern{\'a}ndez, and Ernesto Kofman.
+\newblock Efficient matching in large dae models.
+\newblock {\em ACM Transactions on Mathematical Software}, 2024.
+
+\bibitem{marzorati20}
+Denise Marzorati, Joaquın Fernandez, and Ernesto Kofman.
+\newblock Aplanado eficiente de grandes sistemas de ecuaciones
+  algebraico-diferenciales.
+\newblock In {\em FCEIA-ECEN-DCC- Trabajos Finales de Grado (trabajos finales,
+  proyectos y tesinas)}, 2020.
+
+\bibitem{rozhdestvensky2020description}
+Kirill Rozhdestvensky, Vladimir Ryzhov, Tatiana Fedorova, Kirill Safronov,
+  Nikita Tryaskin, Shaharin~Anwar Sulaiman, Mark Ovinis, and Suhaimi Hassan.
+\newblock Description of the wolfram systemmodeler.
+\newblock In {\em Computer Modeling and Simulation of Dynamic Systems Using
+  Wolfram SystemModeler}, pages 23--87. Springer, 2020.
+
+\bibitem{ZFK19}
+Pablo Zimmermann, Joaqu{\'\i}n Fern{\'a}ndez, and Ernesto Kofman.
+\newblock Set-based graph methods for fast equation sorting in large dae
+  systems.
+\newblock In {\em Proceedings of the 9th International Workshop on
+  Equation-based Object-oriented Modeling Languages and Tools}, pages 45--54,
+  2019.
+
+\end{thebibliography}

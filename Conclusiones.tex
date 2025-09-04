@@ -1,0 +1,54 @@
+\chapter{Conclusiones finales y trabajos futuros}
+
+\section*{Conclusiones finales}
+
+Durante el desarrollo de esta tesina se obtuvieron los siguientes resultados:
+\begin{itemize}
+    \item Se logró con éxito construir una implementación de conjuntos ordenados capaz de manejar múltiples dimensiones y paso igual o distinto a uno.  
+    Además, esta presenta un rendimiento superior al de la implementación de conjuntos desordenados, especialmente cuando se utilizan más de una dimensión como se vio en los casos de prueba sintéticos y en los casos de prueba.  
+    
+    Sin embargo, en comparación con la implementación de conjuntos ordenados densos, el rendimiento de la presente implementación en los casos de prueba sintéticos con una única dimensión y paso igual a uno resulta notablemente inferior en ciertos casos, como en las operaciones de complemento o unión, mientras que, por ejemplo, en la intersección el rendimiento es muy similar.
+
+    \item Se consiguió desarrollar una implementación de \textit{piecewise maps} ordenados, 
+    constituyendo así la primera implementación de \textit{piecewise maps} que aprovecha el orden 
+    para mejorar su desempeño.  
+    
+    Además, los resultados de los casos de prueba muestran que esta implementación presenta 
+    un rendimiento superior al de los \textit{piecewise maps} desordenados, 
+    aunque la mejora no es tan marcada como la observada en la implementación de conjuntos ordenados 
+    frente a los conjuntos desordenados.  
+    Cabe destacar que las pruebas se realizaron utilizando los
+    \textit{piecewise maps} desordenados optimizados, y no la versión original con la que se comenzó el desarrollo de esta tesina.
+\end{itemize}
+
+Por ende, en conclusión, se lograron cumplir los objetivos planteados para esta tesina, 
+incluso alcanzando las mejoras de rendimiento esperadas.  
+No obstante, hacia el final del desarrollo ciertas cuestiones, la cuales, resultan lo suficientemente relevantes como para ser enunciadas, pueden utilizarse para el desarrollo de nuevos trabajos en el futuro.  
+Estas serán ampliadas en la siguiente sección dedicada a los trabajos futuros.
+
+\section*{Trabajos futuros}
+
+En este trabajo se presentaron, en un capítulo propio, un conjunto de optimizaciones 
+aplicadas a ciertas operaciones de los \textit{piecewise maps} desordenados.  
+Estas surgieron durante el desarrollo de la implementación ordenada, 
+ya que se partió de la versión desordenada para construir esta última.  
+Sin embargo, estas no son las únicas optimizaciones que pueden realizarse sobre 
+los \textit{piecewise maps} desordenados, 
+ni significa que, por no haberse presentado ninguna para los conjuntos desordenados, no existan optimizaciones posibles para estos últimos.
+
+En particular, los diferentes criterios de solapamiento enunciados a lo largo de este trabajo 
+no requieren del orden para funcionar correctamente.  
+Por ende, los criterios aplicados en las operaciones de conjuntos ordenados 
+también podrían emplearse en conjuntos desordenados; 
+de igual forma, en el caso de los \textit{piecewise maps}, 
+los criterios definidos para los ordenados podrían aplicarse a los desordenados.
+
+Cabe destacar que, además de utilizar estos criterios en las implementaciones desordenadas, 
+también sería posible trasladarlos a estructuras de jerarquía inferior.  
+Es decir, el criterio de solapamiento utilizado en conjuntos podría desplazarse 
+a la implementación de multi-intervalos; 
+y, de manera análoga, los utilizados a nivel de \textit{piecewise maps} 
+podrían trasladarse a conjuntos.
+
+No obstante, esta migración debería realizarse con cautela, 
+con el objetivo de no disminuir el rendimiento de ninguna de las implementaciones que harían uso de estos criterios.

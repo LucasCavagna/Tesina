@@ -1,0 +1,77 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+Reallocating 'name_of_file' (item size: 1) to 20 items.
+A level-1 auxiliary file: Agradecimientos.aux
+Reallocating 'name_of_file' (item size: 1) to 13 items.
+A level-1 auxiliary file: commands.aux
+Reallocating 'name_of_file' (item size: 1) to 17 items.
+A level-1 auxiliary file: Introduccion.aux
+White space in argument---line 15 of file main.aux
+ : \@input{Conceptos
+ :                   Preliminares.aux}
+I'm skipping whatever remains of this command
+White space in argument---line 16 of file main.aux
+ : \@input{Optimizaciones
+ :                        no orden.aux}
+I'm skipping whatever remains of this command
+White space in argument---line 17 of file main.aux
+ : \@input{Conjuntos
+ :                   Ordenados.aux}
+I'm skipping whatever remains of this command
+White space in argument---line 18 of file main.aux
+ : \@input{PWMaps
+ :                Ordenados.aux}
+I'm skipping whatever remains of this command
+Reallocating 'name_of_file' (item size: 1) to 16 items.
+A level-1 auxiliary file: Rendimiento.aux
+Reallocating 'name_of_file' (item size: 1) to 17 items.
+A level-1 auxiliary file: Conclusiones.aux
+Reallocating 'name_of_file' (item size: 1) to 13 items.
+A level-1 auxiliary file: Notacion.aux
+Reallocating 'name_of_file' (item size: 1) to 6 items.
+The style file: plain.bst
+Reallocating 'name_of_file' (item size: 1) to 5 items.
+Database file #1: refs.bib
+You've used 11 entries,
+            2118 wiz_defined-function locations,
+            571 strings with 6521 characters,
+and the built_in function-call counts, 4367 in all, are:
+= -- 423
+> -- 231
+< -- 5
++ -- 92
+- -- 80
+* -- 289
+:= -- 708
+add.period$ -- 38
+call.type$ -- 11
+change.case$ -- 72
+chr.to.int$ -- 0
+cite$ -- 11
+duplicate$ -- 173
+empty$ -- 338
+format.name$ -- 80
+if$ -- 939
+int.to.chr$ -- 0
+int.to.str$ -- 11
+missing$ -- 10
+newline$ -- 59
+num.names$ -- 22
+pop$ -- 95
+preamble$ -- 1
+purify$ -- 61
+quote$ -- 0
+skip$ -- 120
+stack$ -- 0
+substring$ -- 219
+swap$ -- 52
+text.length$ -- 5
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 44
+warning$ -- 0
+while$ -- 40
+width$ -- 13
+write$ -- 125
+(There were 4 error messages)
